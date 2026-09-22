@@ -37,4 +37,3 @@ Continue with **lab 1** in the build guide. The repository supplies a tested ALU
 The CPU targets an educational RV32I subset with small separate instruction/data memories and no operating system. Source goes in `rtl/`, tests in `sim/`, assembly in `programs/`, and generated files in `build/`. The technical references specify the exact memory, reset, instruction and fault behavior.
 
 Record each attempt, prediction and result in [PERSONAL_PROGRESS.md](PERSONAL_PROGRESS.md). Try the checkpoint before consulting the private answer key.
-
