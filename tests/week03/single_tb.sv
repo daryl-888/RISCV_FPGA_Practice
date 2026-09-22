@@ -1,6 +1,7 @@
 module single_tb;
     timeunit 1ns; timeprecision 1ps;
-    logic clk=0, reset=1, done;
+    logic clk, reset, done;
+    initial begin clk = 0; reset = 1; end
     checked_cpu #(.PIPELINED(0)) core(clk,reset,done);
     always #5 clk=~clk;
     initial begin

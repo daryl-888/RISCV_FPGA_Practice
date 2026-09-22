@@ -26,7 +26,7 @@ The target part is `xc7a35tcpg236-1`. Pin assignments come from the [Digilent ma
 Read [tool setup](../docs/SETUP.md), then follow [the full FPGA lab](../docs/FPGA.md). From the Windows Vivado Tcl Console, substituting the actual checkout path:
 
 ```tcl
-source {C:/fpga/RISCV_FPGA/fpga/create_project.tcl}
+source {C:/fpga/RISCV_FPGA_Practice/fpga/create_project.tcl}
 ```
 
-The created project is `build/vivado/basys3/basys3.xpr`. The script adds SystemVerilog files beneath `rtl/`, the boot image, and constraints. Keep testbenches out of `rtl/`; if using packages, inspect compilation order. Include files below nested directories and optional vendor IP may need explicit project additions. Source creation does not certify synthesis, timing, or hardware behavior.
+The default project is `build/vivado/basys3_pipeline/basys3_pipeline.xpr` with `course_pipeline=1`. For a single-cycle comparison, set `course_pipeline 0` before sourcing; its project is `build/vivado/basys3_single/basys3_single.xpr`. The script adds the explicit modular RTL list, boot image, and constraints. Keep testbenches out of `rtl/` and inspect package compile order. Source creation does not certify synthesis, timing, or hardware behavior.

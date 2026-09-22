@@ -47,8 +47,10 @@ logic [31:0] expected_stores [0:5999];
 logic [31:0] expected_state [0:288];
 string prefix;
 integer expected_count, expected_store_count, expected_stalls;
-integer index=0, store_index=0, stalls_seen=0, cycles=0;
-bit ready=0;
+integer index, store_index, stalls_seen, cycles;
+initial begin index = 0; store_index = 0; stalls_seen = 0; cycles = 0; end
+bit ready;
+initial begin ready = 0; end
 initial begin
  done=0;
  if (!$value$plusargs("prefix=%s",prefix)) $fatal(1,"missing prefix");
@@ -125,7 +127,8 @@ endmodule
 
 module reference_tb;
 timeunit 1ns; timeprecision 1ps;
-logic clk=0,reset=1,done_single,done_pipeline;
+logic clk, reset, done_single, done_pipeline;
+initial begin clk = 0; reset = 1; end
 string prefix,wave;
 checked_cpu #(.PIPELINED(0)) single_core (clk,reset,done_single);
 checked_cpu #(.PIPELINED(1)) pipeline_core (clk,reset,done_pipeline);

@@ -1,7 +1,9 @@
 module board_tb;
 timeunit 1ns; timeprecision 1ps;
-logic clk=0,btnC=1;
-logic [15:0] sw=0,led_single,led_pipeline;
+logic clk, btnC;
+initial begin clk = 0; btnC = 1; end
+logic [15:0] sw, led_single, led_pipeline;
+initial begin sw = 0; end
 basys3_top #(.PIPELINED(0),.IMEM_FILE("programs/boot.hex")) single_top
  (.clk(clk),.btnC(btnC),.sw(sw),.led(led_single));
 basys3_top #(.PIPELINED(1),.IMEM_FILE("programs/boot.hex")) pipeline_top

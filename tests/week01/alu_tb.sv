@@ -3,7 +3,8 @@ module alu_tb;
     timeprecision 1ps;
     logic [31:0] a, b, result;
     logic [3:0] op;
-    int checks = 0;
+    int checks;
+    initial begin checks = 0; end
     alu dut (.*);
 
     task automatic check(input logic [3:0] operation,

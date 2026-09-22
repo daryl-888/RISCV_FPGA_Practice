@@ -1,10 +1,15 @@
 module controls_tb;
     timeunit 1ns; timeprecision 1ps;
-    logic used=1, ex_valid=1, ex_write=1, ex_load=0, wb_valid=1, wb_write=1;
-    logic [4:0] source=1, ex_rd=1, wb_rd=1;
-    logic [31:0] captured=7, ex_value=11, wb_value=9, value;
-    logic id_valid=1, load_valid=1, load_read=1, uses_rs1=1, uses_rs2=0;
-    logic [4:0] load_rd=5, rs1=5, rs2=5;
+    logic used, ex_valid, ex_write, ex_load, wb_valid, wb_write;
+    initial begin used = 1; ex_valid = 1; ex_write = 1; ex_load = 0; wb_valid = 1; wb_write = 1; end
+    logic [4:0] source, ex_rd, wb_rd;
+    initial begin source = 1; ex_rd = 1; wb_rd = 1; end
+    logic [31:0] captured, ex_value, wb_value, value;
+    initial begin captured = 7; ex_value = 11; wb_value = 9; end
+    logic id_valid, load_valid, load_read, uses_rs1, uses_rs2;
+    initial begin id_valid = 1; load_valid = 1; load_read = 1; uses_rs1 = 1; uses_rs2 = 0; end
+    logic [4:0] load_rd, rs1, rs2;
+    initial begin load_rd = 5; rs1 = 5; rs2 = 5; end
     logic load_use;
     forwarding fwd(.*);
     hazard hz(.*);

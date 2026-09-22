@@ -1,7 +1,8 @@
 // A final-state-only test could accidentally accept a one-cycle CPU. This cannot.
 module pipeline_depth_tb;
     timeunit 1ns; timeprecision 1ps;
-    logic clk=0, reset=1;
+    logic clk, reset;
+    initial begin clk = 0; reset = 1; end
     logic [31:0] imem_addr, imem_rdata;
     logic retire_valid;
     logic [31:0] retire_pc;

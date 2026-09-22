@@ -1,9 +1,12 @@
 module fetch_tb;
     timeunit 1ns; timeprecision 1ps;
-    logic clk = 0;
-    logic reset = 1, enable = 1, probe = 0;
+    logic clk;
+    initial begin clk = 0; end
+    logic reset, enable, probe;
+    initial begin reset = 1; enable = 1; probe = 0; end
     logic [31:0] value, next_pc, address, instruction;
-    logic [31:0] probe_address = 0;
+    logic [31:0] probe_address;
+    initial begin probe_address = 0; end
     logic access_fault, misaligned;
     assign next_pc = value + 32'd4;
     assign address = probe ? probe_address : value;
