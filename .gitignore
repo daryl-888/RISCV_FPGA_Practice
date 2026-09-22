@@ -1,9 +1,12 @@
 build/
 obj_dir/
+.venv/
 __pycache__/
 *.pyc
 *.vcd
 *.fst
+core
+core.*
 .Xil/
 *.jou
 *.log

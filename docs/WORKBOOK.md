@@ -1,3 +1,5 @@
+> Historical supplemental material: original lab numbers and commands below are not the active schedule. Use the [eight-week course map](../COURSE_MAP.md) and its current setup/weekly gates first.
+
 # CPU build log
 
 Name: __________  Repository: __________  Start date: __________
@@ -28,4 +30,3 @@ Use [ARCHITECTURE.md](ARCHITECTURE.md) for the educational RV32I subset and [VER
 **Pipeline — after lab 10:** commit ____; comparison report ____; forwarding, one-bubble load-use, flush, and fault-order traces ____.
 
 **FPGA — after lab 12:** commit/bitstream ____; selected clock and timing report ____; inferred memory type ____; board/reset checks ____; three switch/LED observations ____.
-

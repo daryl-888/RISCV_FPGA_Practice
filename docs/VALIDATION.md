@@ -1,3 +1,5 @@
+> Historical supplemental material: original lab numbers and commands below are not the active schedule. Use the [eight-week course map](../COURSE_MAP.md) and its current setup/weekly gates first.
+
 # Validation record
 
 The course is a teaching package with an executable starter, not a completed processor.

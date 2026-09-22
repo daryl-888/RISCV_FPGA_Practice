@@ -1,3 +1,5 @@
+> Historical supplemental material: original lab numbers and commands below are not the active schedule. Use the [eight-week course map](../COURSE_MAP.md) and its current setup/weekly gates first.
+
 # Reference processor lookup
 
 Read [daryl-888/RISC_V at e0c2eaa4c1655d926f467a5b840f35d327e4ea81](https://github.com/daryl-888/RISC_V/tree/e0c2eaa4c1655d926f467a5b840f35d327e4ea81) after building the single-cycle baseline. Its README says it has not been simulated and has no testbench. Findings below come from source inspection, not a successful CPU simulation. No reference RTL is copied into this course.

@@ -1,0 +1,277 @@
+{
+  "smoke": {
+    "top": "tool_smoke",
+    "sources": [
+      "tests/tool_smoke.sv"
+    ]
+  },
+  "alu": {
+    "top": "alu_tb",
+    "sources": [
+      "rtl/common/alu.sv",
+      "tests/week01/alu_tb.sv"
+    ]
+  },
+  "fetch": {
+    "top": "fetch_tb",
+    "sources": [
+      "rtl/common/pc.sv",
+      "rtl/common/imem.sv",
+      "tests/week02/fetch_tb.sv"
+    ]
+  },
+  "regfile": {
+    "top": "regfile_tb",
+    "sources": [
+      "rtl/common/regfile.sv",
+      "tests/week02/regfile_tb.sv"
+    ]
+  },
+  "arithmetic": {
+    "top": "single_tb",
+    "sources": [
+      "rtl/common/rv32_pkg.sv",
+      "rtl/common/alu.sv",
+      "rtl/common/decode.sv",
+      "rtl/common/execute_stage.sv",
+      "rtl/common/regfile.sv",
+      "rtl/common/pc.sv",
+      "rtl/single_cycle/cpu_single.sv",
+      "tests/week03/arithmetic_memory.sv",
+      "tests/reference_tb.sv",
+      "tests/week03/single_tb.sv"
+    ]
+  },
+  "cpu_single": {
+    "top": "single_tb",
+    "sources": [
+      "rtl/common/rv32_pkg.sv",
+      "rtl/common/alu.sv",
+      "rtl/common/decode.sv",
+      "rtl/common/execute_stage.sv",
+      "rtl/common/regfile.sv",
+      "rtl/common/pc.sv",
+      "rtl/single_cycle/cpu_single.sv",
+      "rtl/soc/teaching_memory.sv",
+      "tests/reference_tb.sv",
+      "tests/week03/single_tb.sv"
+    ]
+  },
+  "depth": {
+    "top": "pipeline_depth_tb",
+    "sources": [
+      "rtl/common/rv32_pkg.sv",
+      "rtl/common/alu.sv",
+      "rtl/common/decode.sv",
+      "rtl/common/execute_stage.sv",
+      "rtl/common/regfile.sv",
+      "rtl/common/pc.sv",
+      "rtl/pipeline/forwarding.sv",
+      "rtl/pipeline/hazard.sv",
+      "rtl/pipeline/cpu_pipeline.sv",
+      "tests/week05/pipeline_depth_tb.sv"
+    ]
+  },
+  "controls": {
+    "top": "controls_tb",
+    "sources": [
+      "rtl/pipeline/forwarding.sv",
+      "rtl/pipeline/hazard.sv",
+      "tests/week06/controls_tb.sv"
+    ]
+  },
+  "cpu_both": {
+    "top": "reference_tb",
+    "sources": [
+      "rtl/common/rv32_pkg.sv",
+      "rtl/common/alu.sv",
+      "rtl/common/decode.sv",
+      "rtl/common/execute_stage.sv",
+      "rtl/common/regfile.sv",
+      "rtl/common/pc.sv",
+      "rtl/pipeline/forwarding.sv",
+      "rtl/pipeline/hazard.sv",
+      "rtl/pipeline/cpu_pipeline.sv",
+      "rtl/single_cycle/cpu_single.sv",
+      "rtl/soc/teaching_memory.sv",
+      "tests/reference_tb.sv"
+    ]
+  },
+  "board": {
+    "top": "board_tb",
+    "sources": [
+      "rtl/common/rv32_pkg.sv",
+      "rtl/common/alu.sv",
+      "rtl/common/decode.sv",
+      "rtl/common/execute_stage.sv",
+      "rtl/common/regfile.sv",
+      "rtl/common/pc.sv",
+      "rtl/pipeline/forwarding.sv",
+      "rtl/pipeline/hazard.sv",
+      "rtl/pipeline/cpu_pipeline.sv",
+      "rtl/single_cycle/cpu_single.sv",
+      "rtl/soc/teaching_memory.sv",
+      "rtl/soc/basys3_top.sv",
+      "tests/week08/board_tb.sv"
+    ]
+  },
+  "week01": {
+    "jobs": [
+      {
+        "job": "alu"
+      }
+    ]
+  },
+  "week02": {
+    "jobs": [
+      {
+        "job": "fetch"
+      },
+      {
+        "job": "regfile"
+      }
+    ]
+  },
+  "week03": {
+    "jobs": [
+      {
+        "job": "arithmetic",
+        "cases": [
+          "first_arithmetic",
+          "core_alu"
+        ]
+      }
+    ]
+  },
+  "week04": {
+    "jobs": [
+      {
+        "job": "cpu_single",
+        "cases": [
+          "first_arithmetic",
+          "independent",
+          "core_alu",
+          "word_memory",
+          "arithmetic",
+          "newest_writer",
+          "wb_to_id",
+          "load_add",
+          "load_store_data",
+          "load_store_address",
+          "load_branch",
+          "load_jalr",
+          "false_rs2",
+          "x0",
+          "wrong_path_store",
+          "jumps",
+          "same_rd_jalr",
+          "last_word",
+          "illegal",
+          "ebreak",
+          "lw_misaligned",
+          "sw_misaligned",
+          "lw_out_of_range",
+          "sw_out_of_range",
+          "lw_x0_out_of_range",
+          "negative_address",
+          "branch_misaligned",
+          "jalr_misaligned",
+          "target_fetch_fault",
+          "older_store_before_fault"
+        ]
+      }
+    ]
+  },
+  "week05": {
+    "jobs": [
+      {
+        "job": "depth"
+      }
+    ]
+  },
+  "week06": {
+    "jobs": [
+      {
+        "job": "controls"
+      },
+      {
+        "job": "cpu_both",
+        "cases": [
+          "newest_writer",
+          "wb_to_id",
+          "load_add",
+          "load_store_data",
+          "load_store_address",
+          "load_branch",
+          "load_jalr",
+          "false_rs2",
+          "x0",
+          "wrong_path_store",
+          "jumps",
+          "same_rd_jalr"
+        ]
+      }
+    ]
+  },
+  "week07": {
+    "jobs": [
+      {
+        "job": "depth"
+      },
+      {
+        "job": "cpu_both",
+        "cases": [
+          "first_arithmetic",
+          "independent",
+          "core_alu",
+          "word_memory",
+          "arithmetic",
+          "newest_writer",
+          "wb_to_id",
+          "load_add",
+          "load_store_data",
+          "load_store_address",
+          "load_branch",
+          "load_jalr",
+          "false_rs2",
+          "x0",
+          "wrong_path_store",
+          "jumps",
+          "same_rd_jalr",
+          "last_word",
+          "illegal",
+          "ebreak",
+          "lw_misaligned",
+          "sw_misaligned",
+          "lw_out_of_range",
+          "sw_out_of_range",
+          "lw_x0_out_of_range",
+          "negative_address",
+          "branch_misaligned",
+          "jalr_misaligned",
+          "target_fetch_fault",
+          "wrong_path_fetch_fault",
+          "older_store_before_fault"
+        ]
+      }
+    ]
+  },
+  "week08": {
+    "jobs": [
+      {
+        "job": "depth"
+      },
+      {
+        "job": "cpu_both",
+        "cases": [
+          "mmio",
+          "wrong_path_mmio",
+          "switch_write"
+        ]
+      },
+      {
+        "job": "board"
+      }
+    ]
+  }
+}

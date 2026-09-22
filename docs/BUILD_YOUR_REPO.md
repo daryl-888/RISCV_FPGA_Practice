@@ -1,3 +1,5 @@
+> Historical supplemental material: original lab numbers and commands below are not the active schedule. Use the [eight-week course map](../COURSE_MAP.md) and its current setup/weekly gates first.
+
 # Build your repository
 
 Keep each commit small: one working CPU change and the test that proves it.

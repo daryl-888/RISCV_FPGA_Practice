@@ -4,10 +4,13 @@ Use one entry for each focused work session. Predict the result before simulatio
 
 ## Current position
 
-- Lab: 1 — PC and instruction memory
-- Last passing checkpoint: supplied ALU and image-conversion tests
-- Next circuit: PC reset, increment and enable behavior
-- Current branch: `main`
+- Week: 1 — combinational RTL and your ALU
+- Supplied passing infrastructure: setup smoke, syntax and image-conversion/tool tests (not completed learner RTL)
+- Next circuit: ADD/SUB, then logic/comparison/shift operations
+- Current branch: record your own working branch
+- Current course: [eight-week map](COURSE_MAP.md)
+
+The former starter supplied a completed ALU; the eight-week learner course now starts with an ALU interface so you build week 1 yourself. The prior version remains in Git history.
 
 ## Session template
 

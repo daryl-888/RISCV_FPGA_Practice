@@ -1,0 +1,20 @@
+PYTHON ?= python3
+WEEK ?= 01
+CASE ?= load_add
+export VERILATOR
+.PHONY: help setup-check scaffold-check test-tools test lint regression extended waves all-weeks week01 week02 week03 week04 week05 week06 week07 week08
+help:
+	@echo 'setup-check: prove toolchain works; week01..week08: prove YOUR hardware works'
+	@echo 'test/lint: infrastructure only; regression: required five-stage baseline; extended: 37-operation tests'
+	@echo 'waves CASE=alu or load_add; all-weeks: every required weekly gate'
+setup-check scaffold-check regression extended:
+	$(PYTHON) scripts/course.py $@
+week01 week02 week03 week04 week05 week06 week07 week08:
+	$(PYTHON) scripts/course.py $@
+waves:
+	$(PYTHON) scripts/course.py waves --case $(CASE)
+lint: scaffold-check
+test-tools:
+	$(PYTHON) -m unittest discover -s scripts -p 'test_*.py' -v
+test: test-tools setup-check scaffold-check
+all-weeks: week01 week02 week03 week04 week05 week06 week07 week08

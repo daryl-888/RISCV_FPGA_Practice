@@ -12,18 +12,8 @@ module alu (
         SLL = 4'd7, SRL = 4'd8, SRA = 4'd9;
 
     always_comb begin
-        case (op)
-            ADD:    result = a + b;
-            SUB:    result = a - b;
-            AND_OP: result = a & b;
-            OR_OP:  result = a | b;
-            XOR_OP: result = a ^ b;
-            SLT:    result = {31'b0, ($signed(a) < $signed(b))};
-            SLTU:   result = {31'b0, (a < b)};
-            SLL:    result = a << b[4:0];
-            SRL:    result = a >> b[4:0];
-            SRA:    result = $unsigned($signed(a) >>> b[4:0]);
-            default: result = 32'b0;
-        endcase
+        // Week 1: implement the operations using these local control encodings.
+        // Start with ADD/SUB/AND/OR/XOR/SLT; extend when the basic gate passes.
+        result = 32'b0;
     end
 endmodule

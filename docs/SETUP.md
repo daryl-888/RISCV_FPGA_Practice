@@ -1,97 +1,102 @@
-# Setup: simulation first
+# Setup: use the same checks on every development machine
 
-Use Ubuntu/WSL 2 for simulation and Windows Vivado for Basys3. The supplied targets check the ALU and image converter. Add CPU and SoC targets during the labs.
+Start with `make setup-check`. It compiles and runs a **standalone** SystemVerilog test with a clock, delays, nonblocking assignments, assertions and VCD output. It also deliberately triggers an assertion and verifies a failing process. It does not certify the learner's unfinished CPU.
 
-## 1. Install tools
+Supported baseline: Verilator 5.020 or newer, Python 3.10+, GNU Make, Perl and a C++20-capable compiler. The first compile takes longer; repeat simulations use a local build cache. No proprietary simulator, GUI or RISC-V cross-compiler is needed for the weekly tests.
 
-In **PowerShell**:
+## Choose one environment
 
-```powershell
-wsl --list --verbose
-```
+| Device | Recommended route | Important limit |
+|---|---|---|
+| Ubuntu 24.04 / other Linux | Native packages or the dev container | Use native packages on ARM |
+| Windows | Ubuntu 24.04 in WSL2, or VS Code Dev Containers | Do not run these Makefiles in PowerShell |
+| macOS Intel / Apple Silicon | Homebrew + Apple command-line tools, or dev container | Vivado is a separate supported Windows/Linux workflow |
+| Chromebook, tablet, phone | Browser-based GitHub Codespaces, or SSH to your Linux machine | Simulation runs on the remote host, not natively on iOS/Android |
+| Restricted Linux x86-64 account | Optional local wheel below, if compiler/Python already exist | No permission bypass; otherwise use a permitted remote environment |
 
-If Ubuntu is missing, run as administrator, then restart and complete its account setup:
+"Any device" means access to a supported local or remote environment, not a promise that every device can install Verilator or program an FPGA. Cloud availability, repository access and billing/quota depend on your GitHub account.
 
-```powershell
-wsl --install -d Ubuntu-24.04
-```
+### Ubuntu / WSL2
 
-For an existing version-1 distribution, use `wsl --set-version Ubuntu-24.04 2`, substituting its listed name. See [Microsoft's WSL instructions](https://learn.microsoft.com/en-us/windows/wsl/install).
+If needed, install WSL using [Microsoft's instructions](https://learn.microsoft.com/en-us/windows/wsl/install). In Ubuntu:
 
-Keep the checkout at a short shared path, such as `C:\fpga\RISCV_FPGA` (`/mnt/c/fpga/RISCV_FPGA` in Ubuntu). WSL's own filesystem builds faster, but separate checkouts must stay synchronized. See [filesystem guidance](https://learn.microsoft.com/en-us/windows/wsl/setup/environment).
-
-In **Ubuntu**:
-
-```bash
-sudo apt update
-sudo apt install -y build-essential make git python3 verilator gtkwave \
-  gcc-riscv64-unknown-elf binutils-riscv64-unknown-elf
-cd /mnt/c/fpga/RISCV_FPGA
-mkdir -p build
-verilator --version > build/tool-versions.txt
-g++ --version >> build/tool-versions.txt
-python3 --version >> build/tool-versions.txt
-riscv64-unknown-elf-gcc --version >> build/tool-versions.txt
+```sh
+sudo apt-get update
+sudo apt-get install -y verilator build-essential python3 python3-venv git perl
+make setup-check
 make test
-make lint
-make waves
-gtkwave build/waves/alu.vcd
 ```
 
-Use Verilator 5.x for the starter's `--binary`/`--timing` options. See [Verilator installation](https://verilator.org/guide/latest/install.html), [Ubuntu 24.04 Verilator](https://packages.ubuntu.com/noble/verilator), and [bare-metal GCC](https://packages.ubuntu.com/noble/gcc-riscv64-unknown-elf). Missing packages: enable Ubuntu's `universe` repository and update. Stop at the first build error. If GTKWave cannot open, use another VCD viewer; tests still run without a GUI.
+Run those commands from the **practice repository root**, or the **teacher repository root**. Keep the checkout in the WSL Linux filesystem for simulation; use a separate synchronized checkout for Windows Vivado if necessary. Administrative installation must be performed by someone authorized to manage that machine.
 
-## 2. Check one instruction
+### macOS
 
-In **Ubuntu**:
+Install [Apple command-line tools](https://developer.apple.com/xcode/resources/) and [Homebrew](https://brew.sh/) using their official instructions, then:
 
-```bash
-mkdir -p build/toolchain-check
-cat > build/toolchain-check/check.S <<'EOF'
-    .section .text
-    .globl _start
-_start:
-    addi x1, x0, 5
-1:  jal  x0, 1b
-EOF
-riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32 -mno-relax \
-  -nostdlib -nostartfiles -Wl,--no-relax -Wl,-Ttext=0 -Wl,-e,_start \
-  -o build/toolchain-check/check.elf build/toolchain-check/check.S
-riscv64-unknown-elf-objdump -d -M numeric,no-aliases \
-  build/toolchain-check/check.elf
-riscv64-unknown-elf-objcopy -O binary -j .text \
-  build/toolchain-check/check.elf build/toolchain-check/check.bin
-od -An -tx1 build/toolchain-check/check.bin
+```sh
+brew install verilator python
+make setup-check
+make test
 ```
 
-Expect words `00500093`, `0000006f`; little-endian bytes `93 00 50 00 6f 00 00 00`. A word-wide `$readmemh` file contains `00500093`, not reversed bytes.
+### Dev container / browser route
 
-The `riscv64` tool prefix can produce RV32I using these explicit [GCC ISA/ABI options](https://gcc.gnu.org/onlinedocs/gcc/RISC-V-Options.html). [Objdump's numeric/no-aliases options](https://www.sourceware.org/binutils/docs/binutils/objdump.html) expose canonical instructions. This assembly runs without an OS or C runtime; later C needs startup code, a stack, and a deliberate linker layout.
+Both repositories include `.devcontainer/`. In VS Code, open the repository and choose **Dev Containers: Reopen in Container**. Docker or a compatible supported container host must already be available.
 
-## 3. Build a program
+For a browser-only device, open the private repository in GitHub, use **Code → Codespaces → Create codespace**, and wait for the container setup. The configured post-create check runs `make setup-check`; run it again yourself, then `make test`. The learner needs access to the practice repository only. A private teacher repository and its solution files must not be shared with them.
 
-```bash
-make program PROGRAM=arithmetic
-make program PROGRAM=switches_leds
-riscv64-unknown-elf-objdump -d -M numeric,no-aliases \
-  build/programs/switches_leds.elf
-cp build/programs/switches_leds.hex programs/boot.hex
+A Codespace is a remote Linux computer; a browser is sufficient for the editor and terminal. Prefer a physical keyboard for HDL work. No physical FPGA/USB connection is implied.
+
+### Optional non-admin Linux x86-64 setup
+
+Use this only if Python with venv/pip, GNU g++, Make and Perl are already installed. This explicitly installs the third-party [verilator-python wheel](https://pypi.org/project/verilator/5.32.0/), pinned to 5.32.0, into a repository-local virtual environment. It is **not** the upstream Verilator package distribution.
+
+Practice repository:
+
+```sh
+bash scripts/bootstrap-local.sh
+source .venv/bin/activate
+make setup-check
+make test
 ```
 
-`programs/linker.ld` sets addresses; `scripts/bin_to_mem.py` converts `.bin` bytes into `.hex` words. The `.elf` retains addresses for disassembly. Inspect `python3 scripts/bin_to_mem.py --help` when changing formats.
+Teacher repository:
 
-Check entry address zero, supported instructions, and size ≤1 KiB. Instruction ROM and data RAM are **separate** 256-word memories, each addressed at `0x00000000–0x000003ff`. Validate the full address and alignment before taking index `[9:2]`; otherwise invalid addresses wrap. NOP padding does not excuse a runaway PC.
-
-In your ROM use `$readmemh("boot.hex", imem)` and the same image in simulation. Vivado must include `programs/boot.hex`; rebuild the bitstream after changing it.
-
-## 4. Install Windows Vivado
-
-Include Artix-7 support and cable drivers. Check your release's [AMD device/edition support](https://docs.amd.com/r/2025.1-English/ug973-vivado-release-notes-install-license/Supported-Devices). In the **Vivado Tcl Console**:
-
-```tcl
-version -short
-get_parts xc7a35tcpg236-1
+```sh
+bash course/scripts/bootstrap-local.sh
+source course/.venv/bin/activate
+make setup-check
+make test
 ```
 
-Record the version; the second command must return the part. Use Windows Hardware Manager for USB/JTAG. No board-file package is needed when selecting the part directly. Continue with [FPGA.md](FPGA.md) in labs 11–12.
+Activate the same environment again in every new terminal. Use activation as above, or pass an **absolute** path via `PYTHON=/absolute/path/to/.venv/bin/python`. Teacher root commands change directory, so a relative Python path is not portable.
 
-Before lab 1, verify ALU tests/lint pass, the VCD exists, and the known instruction matches. For confusing failures, check the shell, working directory, LF line endings, ROM word order, selected top, and output timestamp first.
+The launcher prefers an installed native `verilator`, then the activated Python environment's wheel. Its Linux-wheel C++20/PCH workaround is scoped to that command and never modifies system settings. On ARM/macOS use the native/container route, not this x86-64 wheel. The wheel may print an unhelpful "UNKNOWN.REV" version; the real compile-and-run smoke test remains the capability check.
+
+## Daily commands
+
+```sh
+make setup-check          # environment is usable
+make test                 # Python/tool tests + smoke test + scaffold syntax
+make week01               # current week's actual hardware gate
+make waves CASE=alu       # requires a working ALU; build/waves/alu.vcd
+make week05               # stage-depth and independent-instruction gate
+make regression           # required 14-operation, hazard and safety baseline
+make extended             # optional 37-operation extension
+```
+
+Teacher root commands delegate to `course/`; its artifacts are under `course/build/`. Practice artifacts are under `build/`. Each simulator build has a `build.log`. VCD files can be opened locally with GTKWave or a trusted VS Code waveform viewer. Do not upload private teacher HDL/waveforms to a public viewer. Headless tests need no display server.
+
+**Expected on a fresh learner clone:** setup/scaffold checks pass; `make week01` fails until the ALU is implemented. Later weekly checks similarly remain red until their cumulative work is complete. A green infrastructure CI badge is not a finished processor.
+
+## Troubleshooting
+
+- "Verilator not found": install one supported route or activate the correct virtual environment. `python3 scripts/verilator.py --version` (under `course/` for teacher) checks discovery.
+- `VERILATOR` can name **one executable path**, including spaces, not a shell command with flags. An invalid explicit override fails rather than silently choosing another tool. Unset stale `VERILATOR` or `VERILATOR_ROOT` settings.
+- Coroutine/PCH compiler errors on the optional wheel: use the supplied launcher/Make targets and GNU g++; do not invoke its internal binary directly.
+- A weekly failure after successful setup usually means an unfinished or incorrect circuit. Read the first assertion and inspect the named signals; do not weaken the expected result.
+- Tool/compiler changed: `make clean` in the course directory (or practice root), then rerun. Never commit build output or `.venv`.
+- No desktop/wave viewer: tests still work. Copy only your own VCD to a trusted desktop, or use an editor extension in the remote environment.
+- Cross-assembler missing: weekly cases already include machine words. Optional `make program PROGRAM=arithmetic` requires an RV32-capable bare-metal toolchain; on Ubuntu install `gcc-riscv64-unknown-elf binutils-riscv64-unknown-elf`.
+
+Upstream installation reference: [Verilator](https://verilator.org/guide/latest/install.html). Hardware work is separate: [FPGA procedure](FPGA.md).

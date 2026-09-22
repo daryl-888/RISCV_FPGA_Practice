@@ -1,3 +1,5 @@
+> Historical supplemental material: original lab numbers and commands below are not the active schedule. Use the [eight-week course map](../COURSE_MAP.md) and its current setup/weekly gates first.
+
 # Verification lookup
 
 These are acceptance tests to implement; they are not claims that a complete CPU exists or has passed. Starter CPU simulation covers only the supplied ALU; `make test` also checks image-conversion tools. Both CPUs must meet [ARCHITECTURE.md](ARCHITECTURE.md).

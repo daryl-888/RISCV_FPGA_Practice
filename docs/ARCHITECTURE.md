@@ -1,3 +1,5 @@
+> Historical supplemental material: original lab numbers and commands below are not the active schedule. Use the [eight-week course map](../COURSE_MAP.md) and its current setup/weekly gates first.
+
 # Architecture lookup
 
 Build the initial 14-instruction single-cycle CPU, extend it to 37 instructions, then pipeline the same behavior. This is an RV32I subset: no compressed instructions, multiply/divide, CSRs, interrupts, privilege modes, caches, or OS. `FENCE`, `ECALL`, and `EBREAK` fault. [RV32I specification, version 2.1](https://docs.riscv.org/reference/isa/v20240411/unpriv/rv32.html)

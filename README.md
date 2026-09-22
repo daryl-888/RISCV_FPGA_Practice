@@ -1,39 +1,26 @@
-# RISCV_FPGA Practice
+# RISC-V FPGA — eight-week learner course
 
-This is your private implementation workspace. Build a single-cycle RISC-V CPU, convert it to a five-stage pipeline, and run it on a Basys 3. Learn Verilog by writing and testing the actual processor modules.
+Build your own SystemVerilog CPU, ending with a **real five-stage IF/ID/EX/MEM/WB pipeline**. Start here, not in the historical lab documents.
 
-Start each session with `git pull --ff-only` and finish a passing checkpoint with a focused commit and `git push`. The public `daryl-888/RISCV_FPGA` repository remains the publishable course. The private `daryl-888/RISCV_FPGA_Teacher` repository contains worked answers and complete reference implementations.
-
-**[Follow the build guide](docs/COURSE.md)** — 12 build labs across six weeks. Start with the PC and instruction memory, then add each working piece.
-
-| Week | Build |
-|---|---|
-| 1 | PC, instruction memory, register file, ALU and arithmetic execution |
-| 2 | Data memory, branches, jumps and the initial 14-instruction CPU |
-| 3 | Complete the 37-instruction subset; add pipeline registers |
-| 4 | Forwarding and load-use stalls |
-| 5 | Redirects, faults and comparison against the single-cycle CPU |
-| 6 | MMIO, board-wrapper simulation, Vivado timing and Basys 3 execution |
-
-## Start coding
-
-Install tools with [SETUP.md](docs/SETUP.md), then run the supplied example:
+1. [Set up Verilator](docs/SETUP.md) and run `make setup-check`.
+2. Read the [eight-week plan and textbook assignments](COURSE_MAP.md).
+3. Start [week 1](labs/week01/README.md), use [interfaces](docs/INTERFACES.md), and keep your [progress record](PERSONAL_PROGRESS.md).
 
 ```sh
-make test
-make waves
+make setup-check  # working simulator, assertions and waveform generation
+make test         # starter infrastructure/syntax checks
+make week01       # intentionally fails until YOU implement the ALU
 ```
 
-Continue with **lab 1** in the build guide. The repository supplies a tested ALU, assembly examples, memory-image conversion, and FPGA templates. You build the full CPUs and board wrapper during the labs. See [validation results](docs/VALIDATION.md).
+This is a cumulative **starter**, not a completed CPU. `rtl/` contains interfaces and TODOs; tests contain expected results, not future hardware solutions. Later weekly targets stay red until you build those modules. A green starter CI result does not certify processor correctness.
 
-## Use when needed
+| Weeks | Milestone |
+|---|---|
+| 1–2 | Combinational HDL, tests, state, fetch and register file |
+| 3–4 | Decode/execution and a 14-operation single-cycle reference |
+| 5–6 | Five pipeline stages, forwarding, load stalls, redirects/flushes |
+| 7–8 | Architectural regression, pipeline MMIO and honest FPGA evidence |
 
-- [Tutor coding notes](docs/INSTRUCTOR.md) and [build log](docs/WORKBOOK.md)
-- [Architecture reference](docs/ARCHITECTURE.md) and [test programs/results](docs/VERIFICATION.md)
-- [Basys 3 build steps](docs/FPGA.md)
-- [Existing RISC_V repository: files and corrections](docs/REFERENCE_REPO.md)
-- [Build and publish your own repository](docs/BUILD_YOUR_REPO.md)
+Use Harris & Harris, *Digital Design and Computer Architecture, RISC-V Edition*, alongside each lab; the [chapter map](COURSE_MAP.md) gives stopping points. The core subset is mandatory; full 37-operation support is optional.
 
-The CPU targets an educational RV32I subset with small separate instruction/data memories and no operating system. Source goes in `rtl/`, tests in `sim/`, assembly in `programs/`, and generated files in `build/`. The technical references specify the exact memory, reset, instruction and fault behavior.
-
-Record each attempt, prediction and result in [PERSONAL_PROGRESS.md](PERSONAL_PROGRESS.md). Try the checkpoint before consulting the private answer key.
+Both active course repositories are private at this revision. Your instructor must grant Practice access; the private Teacher repository is not a prerequisite for learners. Old six-lab documentation is supplemental historical material, not the active schedule.
