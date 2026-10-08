@@ -13,6 +13,7 @@ module alu (
     
     // Week 1: implement the operations using these local control encodings. 
     // Start with ADD/SUB/AND/OR/XOR/SLT; extend when the basic gate passes.
+    //test
     
     always_comb begin
         case(op)
