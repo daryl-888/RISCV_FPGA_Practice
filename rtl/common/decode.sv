@@ -73,6 +73,50 @@ module decode(
                 decoded.funct3 = funct3;
                 decoded.alu_op = ALU_SUB;
             end
+            else if (funct3 = 3'b111 && 
+                    funct7 == 7'b0000000) begin
+                
+                decoded.legal = 1'b1;
+                decoded.uses_rs1 = 1'b1;
+                decoded.uses_rs2 = 1'b1;
+                decoded.reg_write = 1'b1;
+
+                decoded.rs1 = rs1;
+                decoded.rs2 = rs2;
+                decoded.rd = rd;
+                decoded.funct3 = funct3;
+                decoded.alu_op = ALU_AND;
+            end
+            else if (funct3 = 3'b110 && 
+                    funct7 == 7'b0000000) begin 
+                
+                decoded.legal = 1'b1;
+                decoded.uses_rs1 = 1'b1;
+                decoded.uses_rs2 = 1'b1;
+                decoded.reg_write = 1'b1;
+
+                decoded.rs1 = rs1;
+                decoded.rs2 = rs2;
+                decoded.rd = rd;
+                decoded.funct3 = funct3;
+                decoded.alu_op = ALU_OR;
+            end
+            else if (funct3 = 3'b100 &&
+                    funct = 7'b0000000) begin 
+                
+                decoded.legal = 1'b1;
+                decoded.uses_rs1 = 1'b1;
+                decoded.uses_rs2 = 1'b1;
+                decoded.reg_write = 1'b1;
+
+                decoded.rs1 = rs1;
+                decoded.rs2 = rs2;
+                decoded.rd = rd;
+                decoded.funct3 = funct3;
+                decoded.alu_op = ALU_XOR
+            end
+
+
     end
 
 
