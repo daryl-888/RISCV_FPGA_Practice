@@ -56,7 +56,7 @@ module decode(
                 decoded.rs2 = rs2;
                 decoded.rd = rd;
                 decoded.funct3 = funct3;
-                decoded.alu_opp = ALU_ADD
+                decoded.alu_opp = ALU_ADD;
             end
         end
             else if (funct3 == 3'b000 && 
@@ -71,7 +71,7 @@ module decode(
                 decoded.rs2 = rs2;
                 decoded.rd = rd;
                 decoded.funct3 = funct3;
-                decoded.alu_op = ALU_SUB
+                decoded.alu_op = ALU_SUB;
             end
     end
 
