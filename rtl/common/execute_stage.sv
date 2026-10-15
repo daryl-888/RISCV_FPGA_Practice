@@ -22,12 +22,12 @@ module execute_stage(
     );
 
     always_comb begin
-        result = '0
+        result = '0;
 
         result.value = alu_result;
         result.next_pc = pc + 32'd4;
     end
-    
+
     // Week 4: effective address, store_data=b, branch/jump target, PC+4 link, U ops.
     // Reject illegal instructions/misaligned taken targets without writes.
 endmodule
