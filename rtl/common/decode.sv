@@ -56,9 +56,9 @@ module decode(
                 decoded.rs2 = rs2;
                 decoded.rd = rd;
                 decoded.funct3 = funct3;
-                decoded.alu_opp = ALU_ADD;
+                decoded.alu_op = ALU_ADD;
             end
-        end
+
             else if (funct3 == 3'b000 && 
                     funct7 == 7'b0100000) begin
                 
@@ -102,7 +102,7 @@ module decode(
                 decoded.alu_op = ALU_OR;
             end
             else if (funct3 == 3'b100 &&
-                    funct == 7'b0000000) begin 
+                    funct7 == 7'b0000000) begin 
                 
                 decoded.legal = 1'b1;
                 decoded.uses_rs1 = 1'b1;
@@ -115,9 +115,21 @@ module decode(
                 decoded.funct3 = funct3;
                 decoded.alu_op = ALU_XOR;
             end
-
-
+            else if (funct3 == 3'b010 &&
+                    funct7 == 7'b0000000) begin
+                
+                decoded.legal = 1'b1;
+                decoded.uses_rs1 = 1'b1;
+                decoded.uses_rs2 = 1'b1;
+                decoded.reg_write = 1'b1;
+                
+                decoded.rs1 = rs1;
+                decoded.rs2 = rs2;
+                decoded.rd = rd;
+                decoded.funct3 = funct3;
+                decoded.alu_op = ALU_SLT;
+            end
+        end
     end
-
 
 endmodule

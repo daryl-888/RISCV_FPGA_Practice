@@ -22,9 +22,47 @@ module cpu_single (
     output logic stall, redirect,
     output logic [31:0] debug_regs [0:31]
 );
-    timeunit 1ns; timeprecision 1ps;
+    timeunit 1ns;
+    timeprecision 1ps;
     import rv32_pkg::*;
     // Connect decode, execute_stage and regfile modules using the documented ports.
+    decoded_t decoded;
+
+    logic [31:0] rs1_data;
+    logic [31:0] rs2_data;
+    logic [31:0] writeback_data;
+    logic writeback_en;
+    exec_result_t exec_result;
+
+    decode u_decode(
+        .instr(imem_rdata),
+        .decoded(decoded)
+    );
+
+    regfile u_regfile (
+        .clk(clk),
+        .reset(reset),
+        .write_en(writeback_en),
+        .ra(decoded.rs1),
+        .rb(decoded.rs2),
+        .rd(decoded.rd),
+        .write_data(writeback_data),
+        .a(rs1_data),
+        .b(rs2_data),
+        .debug_regs(debug_regs)
+    );
+
+    execute_stage u_execute (
+        .decoded(decoded),
+        .pc(pc),
+        .a(rs1_data),
+        .b(rs2_data),
+        .result(exec_result)
+    );
+    
+    assign writeback_data = exec_result.value;
+    assign writeback_en = decoded.reg_write && !reset;
+
     // Single-cycle: week 3 arithmetic, week 4 memory/control flow.
     // Pipeline: week 5 four valid-tagged boundary registers; week 6 hazards/redirect.
     // Retirement outputs are registered POST-edge events, once per completed token.
@@ -38,7 +76,4 @@ module cpu_single (
     assign retire_mem_valid=0; assign retire_mem_write=0; assign retire_mem_funct3=0;
     assign retire_mem_addr=0; assign retire_mem_wdata=0; assign retire_mem_rdata=0;
     assign retire_fault=0; assign stall=0; assign redirect=0;
-    for(genvar r=0;r<32;r++) begin : mirror
-        assign debug_regs[r]=0;
-    end
 endmodule
